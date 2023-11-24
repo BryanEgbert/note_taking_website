@@ -33,7 +33,7 @@ class NotesController extends Controller
     public function store(Request $request)
     {
         $content = $request->input('content');
-        $titleDefault = (strlen($content) < 50) ? $content : substr($content, 0, 57) . '...';
+        $titleDefault = (strlen($content) < 50) ? $content : substr($content, 0, 47) . '...';
         $title = $request->input('title', $titleDefault);
 
         Notes::create([
@@ -72,8 +72,11 @@ class NotesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Notes $notes)
+    public function destroy(int $id)
     {
         //
+        $deletedId = Notes::destroy($id);
+
+        return redirect()->intended('/notes');
     }
 }

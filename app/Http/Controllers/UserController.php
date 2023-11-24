@@ -24,7 +24,7 @@ class UserController extends Controller
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required'],
+            'password' => ['required', 'current_password'],
         ]);
 
         if (Auth::attempt($credentials))
@@ -45,9 +45,15 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        if (!$request->has(['name', 'email', 'password'])) {
-            return Redirect::to('/register')->with('errorMessage', 'Missing required field(s)');
-        }
+        // if (!$request->has(['name', 'email', 'password'])) {
+        //     return Redirect::to('/register')->with('errorMessage', 'Missing required field(s)');
+        // }
+
+        $request->validate([
+            'name' => ['required', 'max:255'],
+            'email' => ['required', 'email', 'unique:users,email', 'max:255'],
+            'password' => ['required', 'min:8'],
+        ]);
 
         try 
         {
