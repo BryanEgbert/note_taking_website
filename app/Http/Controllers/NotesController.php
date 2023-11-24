@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreNotesRequest;
 use App\Http\Requests\UpdateNotesRequest;
 use App\Models\Notes;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotesController extends Controller
 {
@@ -13,7 +15,8 @@ class NotesController extends Controller
      */
     public function index()
     {
-        return view('notes');
+        $notes = Notes::where('user_id', Auth::id())->get();
+        return view('notes', ['notes' => $notes]);
     }
 
     /**
@@ -27,9 +30,19 @@ class NotesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreNotesRequest $request)
+    public function store(Request $request)
     {
-        //
+        $content = $request->input('content');
+        $titleDefault = (strlen($content) < 50) ? $content : substr($content, 0, 57) . '...';
+        $title = $request->input('title', $titleDefault);
+
+        Notes::create([
+            'user_id' => Auth::id(),
+            'title' => $title,
+            'content' => $request->input('content'),
+        ]);
+
+        return redirect()->intended('/notes');
     }
 
     /**

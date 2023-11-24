@@ -16,7 +16,7 @@ class UserController extends Controller
     public function index(): View
     {
         $infoMessage = Session::get('infoMessage', '');
-        $errorMessage = Session::get('errorMessage$errorMessage', '');
+        $errorMessage = Session::get('errorMessage', '');
         return view('login', ['infoMessage' => $infoMessage, 'errorMessage' => $errorMessage]);
     }
 
