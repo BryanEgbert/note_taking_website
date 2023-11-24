@@ -17,7 +17,7 @@ return new class extends Migration
                   ->constrained(table: 'users')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->longText('content');
+            $table->longText('content')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
