@@ -16,15 +16,15 @@ class UserController extends Controller
     public function index(): View
     {
         $infoMessage = Session::get('infoMessage', '');
-        $errorMessage = Session::get('errorMessage', '');
-        return view('login', ['infoMessage' => $infoMessage, 'errorMessage' => $errorMessage]);
+        $wrongPasswordMessage = Session::get('wrongPasswordMessage', '');
+        return view('login', ['infoMessage' => $infoMessage, 'wrongPasswordMessage' => $wrongPasswordMessage]);
     }
 
     public function authenticate(Request $request)
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required', 'current_password'],
+            'password' => ['required'],
         ]);
 
         if (Auth::attempt($credentials))
@@ -34,7 +34,7 @@ class UserController extends Controller
             return redirect()->intended('/notes');
         }
 
-        return Redirect::to('/login')->with('errorMessage', 'Wrong email or password');
+        return Redirect::to('/login')->with('wrongPasswordMessage', 'Password is incorrect');
     }
 
     public function create(): View

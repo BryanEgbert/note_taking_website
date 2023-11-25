@@ -4,11 +4,11 @@
 
     <!-- @if (!empty($infoMessage))
         <p>Info: {{ $infoMessage }}</p>
-    @endif
-
-    @if (!empty($errorMessage))
-        <p>Info: {{ $errorMessage }}</p>
     @endif -->
+
+    @if (!empty($wrongPasswordMessage))
+        <p>Info: {{ $wrongPasswordMessage }}</p>
+    @endif
 
     @if ($errors->any())
         <div class="alert alert-danger">

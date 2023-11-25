@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreNotesRequest;
-use App\Http\Requests\UpdateNotesRequest;
 use App\Models\Notes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +13,8 @@ class NotesController extends Controller
      */
     public function index()
     {
-        $notes = Notes::where('user_id', Auth::id())->get();
+        $notes = Notes::where('user_id', Auth::id())->orderBy('created_at', 'desc')->cursorPaginate(15);
+        // dd($notes);
         return view('notes', ['notes' => $notes]);
     }
 
@@ -33,24 +32,33 @@ class NotesController extends Controller
     public function store(Request $request)
     {
         $content = $request->input('content');
-        $titleDefault = (strlen($content) < 50) ? $content : substr($content, 0, 47) . '...';
-        $title = $request->input('title', $titleDefault);
+        $title = $request->input('title');
 
-        Notes::create([
+        if (empty($content) && empty($title)) {
+            return redirect()->intended('/notes');
+        }
+
+        $titleDefault = (strlen($content) < 20) ? $content : (substr($content, 0, 17) . '...');
+        // $title = $request->input('title', $titleDefault);
+        if (empty($title)) {
+            $title = $titleDefault;
+        }
+
+        $notes = Notes::create([
             'user_id' => Auth::id(),
             'title' => $title,
             'content' => $request->input('content'),
         ]);
 
-        return redirect()->intended('/notes');
+        return redirect(url("notes/$notes->id"));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Notes $notes)
+    public function show(int $notes)
     {
-        //
+        return redirect()->intended('/notes');        
     }
 
     /**
@@ -64,18 +72,29 @@ class NotesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateNotesRequest $request, Notes $notes)
+    public function update(Request $request, int $notes)
     {
-        //
+        $content = $request->input('editContent');
+        $title = $request->input('editTitle');
+
+        if (empty($content) && empty($title)) {
+            return redirect()->intended('/notes');
+        }
+
+        $titleDefault = (strlen($content) < 20) ? $content : substr($content, 0, 17) . '...';
+        $title = $request->input('title', $titleDefault);
+
+        Notes::where('id', $notes)->update(['title' => $title, 'content' => $content]);
+
+        return redirect(url("/notes?id=$notes"));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id)
+    public function destroy(int $note)
     {
-        //
-        $deletedId = Notes::destroy($id);
+        $deletedId = Notes::destroy($note);
 
         return redirect()->intended('/notes');
     }

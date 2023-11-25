@@ -26,4 +26,4 @@ Route::get('/register', [UserController::class, 'create']);
 Route::post('/authenticate', [UserController::class, 'authenticate']);
 Route::post('/user', [UserController::class, 'store']);
 
-Route::resource('notes/', NotesController::class)->middleware('auth');
+Route::resource('notes', NotesController::class)->middleware('auth');
