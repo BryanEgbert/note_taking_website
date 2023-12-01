@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <nav class="navbar">
         <img src="images/logo.png" style="height: 60px">
-        <h1>Notes</h1>
+        <h1>QuickNotes</h1>
         <div class="nav-container">
           <a href="{{url ('/login')}}">Log In</a>
           <a href="{{url('/register')}}">Sign Up</a>
