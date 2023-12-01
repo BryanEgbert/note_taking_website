@@ -1,34 +1,31 @@
-<div>
-    <!-- You must be the change you wish to see in the world. - Mahatma Gandhi -->
-    <a href="{{url('/register')}}">Sign Up</a>
+@extends('layout/master')
 
-    <!-- @if (!empty($infoMessage))
-        <p>Info: {{ $infoMessage }}</p>
-    @endif -->
+@section('title', 'Login Page')
 
-    @if (!empty($wrongPasswordMessage))
-        <p>Info: {{ $wrongPasswordMessage }}</p>
-    @endif
+@section('content')
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
+<div class="container">
+    <header>
+        <h2>Log In</h2>
+    </header>
 
     <form action="{{ url('/authenticate') }}" method="post">
         @csrf
-        <label for="email">email</label>
+        <label for="email">Email:</label>
         <input type="email" name="email" id="email" required maxlength="255">
-    
-        <label for="password">password</label>
+
+        <label for="password">Password:</label>
         <input type="password" name="password" id="password" required maxlength="255">
 
-        <button type="submit">Submit</button>
+        @if (!empty($wrongPasswordMessage))
+        <p>Info: {{ $wrongPasswordMessage }}</p>
+        @endif
+
+        <button type="submit">Log In</button>
     </form>
+
+    <div class="divider"></div>
+
+    <a href="{{url('/register')}}">Sign up</a>
 </div>
+@endsection
