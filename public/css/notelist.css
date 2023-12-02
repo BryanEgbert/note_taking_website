@@ -48,19 +48,6 @@ input {
     border-radius: 4px;
 }
   
-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-  
-button:hover {
-    background-color: #0056b3;
-}
-  
 .divider {
     border-top: 1px solid #ddd;
     margin: 20px 0;
@@ -84,10 +71,50 @@ button:hover {
     align-items: center;
 }
 
-.delete-button button {
-    border: none;
-    background: none;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
+.wrapper {
+    display: flex;
+}
+
+.list-container {
+    flex: 1;
+    max-width: 400px;
+    margin: 50px auto;
+    background-color: #fff;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.createlist {
+    flex: 0;
+    padding: 20px;
+}
+
+.note-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.delete-button {
+    border-right: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.note-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.note-title a {
+    text-align: center;
 }
