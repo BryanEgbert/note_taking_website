@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -69,5 +70,12 @@ class UserController extends Controller
             return Redirect::to('/register')->with('errorMessage', 'Email already exists');
         }
 
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect()->intended('/notes');
     }
 }

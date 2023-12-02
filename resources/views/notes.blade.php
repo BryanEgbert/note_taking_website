@@ -1,4 +1,9 @@
 <h3>Notes List</h3>
+
+<form action='{{ url("/logout") }}' method="get">
+    <button type="submit">Logout</button>
+</form>
+
 <button id='addNewButton'>Add New</button>
 
 <form id="createNoteForm" action="{{ url('notes') }} " method="POST", style="display: none;">
@@ -30,6 +35,7 @@
     </nav>
     
     <section id="content" style="display: none;">
+        <!-- Actionnya bakal ditambahin di lewat code JS -->
         <form id='contentForm' action='' method="post">
             @csrf
             @method('PUT')
