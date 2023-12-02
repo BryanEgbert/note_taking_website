@@ -1,6 +1,7 @@
 <h3>Notes List</h3>
 
-<form action='{{ url("/logout") }}' method="get">
+<form action='{{ url("/logout") }}' method="post">
+    @csrf
     <button type="submit">Logout</button>
 </form>
 
