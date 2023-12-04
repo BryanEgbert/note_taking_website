@@ -20,7 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', [UserController::class, 'index'])->name('login');
+Route::get('/', [UserController::class, 'index'])->name('login');
 Route::get('/register', [UserController::class, 'create']);
 
 Route::post('/authenticate', [UserController::class, 'authenticate']);

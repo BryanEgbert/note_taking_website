@@ -35,6 +35,6 @@
 
     <div class="divider"></div>
 
-    <a href="{{url('/login')}}">Log In</a>
+    <a href="{{url('/')}}">Log In</a>
 </div>
 @endsection
