@@ -35,7 +35,7 @@ class UserController extends Controller
             return redirect()->intended('/notes');
         }
 
-        return Redirect::to('/login')->with('wrongPasswordMessage', 'Password is incorrect');
+        return Redirect::to('/')->with('wrongPasswordMessage', 'Password is incorrect');
     }
 
     public function create(): View
@@ -64,7 +64,7 @@ class UserController extends Controller
                 'password' => Hash::make($request->input('password')),
             ]);
     
-            return Redirect::to('/login')->with('infoMessage', 'User successfully registered');
+            return Redirect::to('/')->with('infoMessage', 'User successfully registered');
         } catch(UniqueConstraintViolationException $e)
         {
             return Redirect::to('/register')->with('errorMessage', 'Email already exists');
