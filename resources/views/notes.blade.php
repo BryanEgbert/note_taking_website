@@ -11,7 +11,7 @@
         <div>
             <form action='{{ url("/logout") }}' method="post">
                 @csrf
-                <button type="submit" id="logout">Logout</button>
+                <button type="submit" id="logout" class="logout-btn">Logout</button>
             </form> 
         </div>
     </nav>
@@ -22,11 +22,11 @@
             <h3>Notes List</h3>
         
             <nav>
-                @foreach ($notes as $note)
+                @forelse ($notes as $note)
                     <section class="note-container">
-                        <div class="note-title">
-                            <a href="#" onclick="showContent('{{ $note->id }}', '{{ $note->title }}', '{{ $note->content }}')" class="{{ $note->id }}" style="font-weight: bold;">{{ $note->title }}</a>
-                        </div>
+                        <a href="#" class="note-title-link" onclick="showContent('{{ $note->id }}', '{{ $note->title }}', '{{ $note->content }}')" class="{{ $note->id }}" style="font-weight: bold;">{{ $note->title }}</a>
+                        <!-- <div class="note-title">
+                        </div> -->
                         <form action='{{ url("notes/$note->id") }}' method="POST" class="delete-button">
                             @csrf
                             @method('DELETE')
@@ -35,10 +35,15 @@
                             </button>
                         </form>
                     </section>
-                @endforeach
+                    <hr style="color: lightgray; padding: 0; margin: 0">
+                @empty
+                    <div style="height: 60vh;">
+                        <p style="text-align: center">No Data</p>
+                    </div>
+                @endforelse
             </nav>
 
-            <div>
+            <div style="margin: 0.8em 0;">
                 <a href="{{ $notes->previousPageUrl() }}">Previous</a>
                 <a href="{{ $notes->nextPageUrl() }}">Next</a>
             </div>
@@ -48,37 +53,41 @@
             <!-- <div class="addnewbutton-container"> -->
             <button id='addNewButton'>Add New</button>
             <!-- </div> -->
-            <section id="content" style="display: none;">
+            <section id="content">
                 <!-- Actionnya bakal ditambahin di lewat code JS  -->
-                <form id='contentForm' action='' method="post">
+                <form id="createNoteForm" action="{{ url('notes') }}" method="POST" style="display: none;">
                     @csrf
-                    @method('PUT')
-                    <input type="text" 
-                    style="display: block; font-size: 1.5em; margin-top: 0.83em; margin-bottom: 0.83em; margin-left: 0; margin-right: 0; font-weight: bold;" 
-                        name="editTitle" 
-                        id="editTitle">
-                    <textarea style="word-break: break-word; -ms-word-break: break-word;" name="editContent" id="editContent" cols="100" rows="10"></textarea>
-                    <button type="submit">Submit</button>
+                    <label for="title" style="color: black">title: </label>
+                    <input type="text" name="title" id="titleInput">
+
+                    <label for="content" style="color: black">content: </label>
+                    <textarea name="content" id="contentInput" cols="30" rows="20"></textarea>
+                    <div style="margin: 0.5em 0;">
+                        <button type="submit">Create</button> 
+                        <button type="button" onclick="closeCreateNoteForm()">Close</button>       
+                    </div>
                 </form>
             </section>
-            <form id="createNoteForm" action="{{ url('notes') }}" method="POST" style="display: none;">
+            <!-- <form id="createNoteForm" action="{{ url('notes') }}" method="POST" style="display: none;">
                 @csrf
                 <label for="title" style="color: black">title: </label>
                 <input type="text" name="title" id="titleInput">
 
                 <label for="content" style="color: black">content: </label>
-                <textarea name="content" id="contentInput" cols="30" rows="10"></textarea>
-
-                <button type="submit">Create</button> 
-                <button type="button" onclick="closeCreateNoteForm()">Close</button>       
-            </form>
+                <textarea name="content" id="contentInput" cols="30" rows="20"></textarea>
+                <div>
+                    <button type="submit">Create</button> 
+                    <button type="button" onclick="closeCreateNoteForm()">Close</button>       
+                </div>
+            </form> -->
 
             <script>
                 function showContent(id, title, content) {
-                    let contentElem = document.getElementById("content");
-                    contentElem.style.display = "inherit";
+                    // let contentElem = document.getElementById("content");
+                    // contentElem.style.display = "inherit";
 
-                    let contentFormElem = document.getElementById("contentForm");
+                    let contentFormElem = document.getElementById("createNoteForm");
+                    contentFormElem.style.display = "flex";
                     contentFormElem.onsubmit = function(e) {
                         e.preventDefault();
                         this.display = "none";
@@ -86,13 +95,13 @@
 
                     contentFormElem.action = `notes/${id}`;
                     // content
-                    let editTitleInputElem = document.getElementById("editTitle");
+                    let editTitleInputElem = document.getElementById("titleInput");
                     editTitleInputElem.value = title;
     
-                    let editContentElem = document.getElementById("editContent");
+                    let editContentElem = document.getElementById("contentInput");
                     editContentElem.innerText = content;
 
-                    contentElem.firstElementChild.value = title;
+                    // contentElem.firstElementChild.value = title;
                 }
 
                 function closeCreateNoteForm() {
@@ -100,7 +109,14 @@
                 }
 
                 document.getElementById("addNewButton").onclick = function (e) {
-                    document.getElementById("createNoteForm").style.display = "block";
+                    let contentFormElem = document.getElementById("createNoteForm");
+                    contentFormElem.style.display = "flex";
+
+                    let editTitleInputElem = document.getElementById("titleInput");
+                    editTitleInputElem.value = "";
+    
+                    let editContentElem = document.getElementById("contentInput");
+                    editContentElem.innerText = "";
                 };
             </script>
         </div>
