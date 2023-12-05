@@ -72,7 +72,7 @@ class NotesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, int $notes)
+    public function update(Request $request, int $note)
     {
         $content = $request->input('editContent');
         $title = $request->input('editTitle');
@@ -84,9 +84,9 @@ class NotesController extends Controller
         $titleDefault = (strlen($content) < 20) ? $content : substr($content, 0, 17) . '...';
         $title = $request->input('title', $titleDefault);
 
-        Notes::where('id', $notes)->update(['title' => $title, 'content' => $content]);
+        Notes::where('id', $note)->update(['title' => $title, 'content' => $content]);
 
-        return redirect(url("/notes?id=$notes"));
+        return redirect(url("/notes?id=$note"))->with(['title' => $title, 'content' => $content]);
     }
 
     /**

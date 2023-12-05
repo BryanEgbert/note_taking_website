@@ -24,7 +24,7 @@
             <nav>
                 @forelse ($notes as $note)
                     <section class="note-container">
-                        <a href="#" class="note-title-link" onclick="showContent('{{ $note->id }}', '{{ $note->title }}', '{{ $note->content }}')" class="{{ $note->id }}" style="font-weight: bold;">{{ $note->title }}</a>
+                        <a href="#" class="note-title-link" onclick='showContent(`{{ url("notes/$note->id ") }}`, `{{ $note->title }}`, `{{ $note->content }}`)' id="note-title-{{ $note->id }}" style="font-weight: bold;">{{ $note->title }}</a>
                         <!-- <div class="note-title">
                         </div> -->
                         <form action='{{ url("notes/$note->id") }}' method="POST" class="delete-button">
@@ -53,63 +53,83 @@
             <!-- <div class="addnewbutton-container"> -->
             <button id='addNewButton'>Add New</button>
             <!-- </div> -->
-            <section id="content">
-                <!-- Actionnya bakal ditambahin di lewat code JS  -->
-                <form id="createNoteForm" action="{{ url('notes') }}" method="POST" style="display: none;">
-                    @csrf
-                    <label for="title" style="color: black">title: </label>
-                    <input type="text" name="title" id="titleInput">
+            <form id="updateNoteForm" action="" method="POST" style="display: none;">
+                @csrf
+                @method('PUT')
+                <label for="editTitle" style="color: black">title: </label>
+                <input type="text" name="editTitle" id="editTitle">
 
-                    <label for="content" style="color: black">content: </label>
-                    <textarea name="content" id="contentInput" cols="30" rows="20"></textarea>
-                    <div style="margin: 0.5em 0;">
-                        <button type="submit">Create</button> 
-                        <button type="button" onclick="closeCreateNoteForm()">Close</button>       
-                    </div>
-                </form>
-            </section>
-            <!-- <form id="createNoteForm" action="{{ url('notes') }}" method="POST" style="display: none;">
+                <label for="editContent" style="color: black">content: </label>
+                <textarea name="editContent" id="editContent" cols="30" rows="20"></textarea>
+
+                <div style="margin: 0.5em 0;">
+                    <button type="submit">Update</button>
+                    <button type="button" onclick="closeUpdateNoteForm()">Close</button>       
+                </div>
+            </form>
+            
+            <form id="createNoteForm" action="{{ url('notes') }}" method="POST" style="display: none;">
                 @csrf
                 <label for="title" style="color: black">title: </label>
                 <input type="text" name="title" id="titleInput">
 
                 <label for="content" style="color: black">content: </label>
                 <textarea name="content" id="contentInput" cols="30" rows="20"></textarea>
-                <div>
+                <div style="margin: 0.5em 0;">
                     <button type="submit">Create</button> 
                     <button type="button" onclick="closeCreateNoteForm()">Close</button>       
                 </div>
-            </form> -->
+            </form>
 
             <script>
-                function showContent(id, title, content) {
-                    // let contentElem = document.getElementById("content");
-                    // contentElem.style.display = "inherit";
+                window.onload = function (e) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const idParam = urlParams.get('id');
 
-                    let contentFormElem = document.getElementById("createNoteForm");
+                    if (idParam === null) return;
+ 
+                    document.getElementById(`note-title-${idParam}`);
+
+                    let contentFormElem = document.getElementById("updateNoteForm");
+                    contentFormElem.style.display = "flex";
+
+                    let editTitleInputElem = document.getElementById("editTitle");
+                    editTitleInputElem.value = "{{ Session::get('title', '') }}";
+    
+                    let editContentElem = document.getElementById("editContent");
+                    editContentElem.value = "{{ Session::get('content', '') }}";
+                }
+
+                function showContent(url, title, content) {
+                    document.getElementById("createNoteForm").style.display = "none";
+
+                    let contentFormElem = document.getElementById("updateNoteForm");
                     contentFormElem.style.display = "flex";
                     contentFormElem.onsubmit = function(e) {
-                        e.preventDefault();
                         this.display = "none";
                     };
 
-                    contentFormElem.action = `notes/${id}`;
-                    // content
-                    let editTitleInputElem = document.getElementById("titleInput");
+                    contentFormElem.action = url;
+
+                    let editTitleInputElem = document.getElementById("editTitle");
                     editTitleInputElem.value = title;
     
-                    let editContentElem = document.getElementById("contentInput");
-                    editContentElem.innerText = content;
-
-                    // contentElem.firstElementChild.value = title;
+                    let editContentElem = document.getElementById("editContent");
+                    editContentElem.value = content;
                 }
 
                 function closeCreateNoteForm() {
                     document.getElementById("createNoteForm").style.display = "none";
                 }
 
+                function closeUpdateNoteForm() {
+                    document.getElementById("updateNoteForm").style.display = "none";
+                }
+
                 document.getElementById("addNewButton").onclick = function (e) {
+                    document.getElementById("updateNoteForm").style.display = "none";
                     let contentFormElem = document.getElementById("createNoteForm");
+                    contentFormElem.action = '{{ url("notes") }}';
                     contentFormElem.style.display = "flex";
 
                     let editTitleInputElem = document.getElementById("titleInput");
