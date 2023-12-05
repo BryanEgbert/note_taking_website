@@ -63,10 +63,10 @@
             </section>
             <form id="createNoteForm" action="{{ url('notes') }}" method="POST" style="display: none;">
                 @csrf
-                <label for="title">title: </label>
+                <label for="title" style="color: black">title: </label>
                 <input type="text" name="title" id="titleInput">
 
-                <label for="content">content: </label>
+                <label for="content" style="color: black">content: </label>
                 <textarea name="content" id="contentInput" cols="30" rows="10"></textarea>
 
                 <button type="submit">Create</button> 
