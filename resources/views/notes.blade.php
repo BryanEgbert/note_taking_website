@@ -45,6 +45,9 @@
         </div>
         
         <div class="createlist">
+            <!-- <div class="addnewbutton-container"> -->
+            <button id='addNewButton'>Add New</button>
+            <!-- </div> -->
             <section id="content" style="display: none;">
                 <!-- Actionnya bakal ditambahin di lewat code JS  -->
                 <form id='contentForm' action='' method="post">
@@ -58,8 +61,6 @@
                     <button type="submit">Submit</button>
                 </form>
             </section>
-            <button id='addNewButton'>Add New</button>
-
             <form id="createNoteForm" action="{{ url('notes') }}" method="POST" style="display: none;">
                 @csrf
                 <label for="title">title: </label>
