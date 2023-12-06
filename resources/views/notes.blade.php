@@ -64,7 +64,7 @@
 
                 <div style="margin: 0.5em 0;">
                     <button type="submit">Update</button>
-                    <button type="button" onclick="closeUpdateNoteForm()">Close</button>       
+                    <button type="button" id="updateNoteFormCloseBtn" onclick="closeUpdateNoteForm()">Close</button>       
                 </div>
             </form>
             
@@ -77,7 +77,7 @@
                 <textarea name="content" id="contentInput" cols="30" rows="20"></textarea>
                 <div style="margin: 0.5em 0;">
                     <button type="submit">Create</button> 
-                    <button type="button" onclick="closeCreateNoteForm()">Close</button>       
+                    <button type="button" id="createNoteFormCloseBtn" onclick="closeCreateNoteForm()">Close</button>       
                 </div>
             </form>
 
@@ -118,11 +118,11 @@
                     editContentElem.value = content;
                 }
 
-                function closeCreateNoteForm() {
+                document.getElementById("createNoteFormCloseBtn").onclick = function (e) {
                     document.getElementById("createNoteForm").style.display = "none";
                 }
 
-                function closeUpdateNoteForm() {
+                document.getElementById("updateNoteFormCloseBtn").onclick = function (e) {
                     document.getElementById("updateNoteForm").style.display = "none";
                 }
 
